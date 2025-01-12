@@ -55,6 +55,8 @@ toolbar.textContent = "";
 toolbar.style.fontSize = "12px";
 toolbar.style.fontWeight = "bold";
 toolbar.style.top = "14px";
+toolbar.style.font-family: "Arial"
+
 
 
 const metrics = [
