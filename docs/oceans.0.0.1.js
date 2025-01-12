@@ -100,13 +100,46 @@ document.body.appendChild(infoBox);
 // Define the handler for click events
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 
-
-handler.setInputAction(async (click) => {
- 
+	handler.setInputAction(async (click) => {
   
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-// Set default camera position
+
+
+// Load rNaturalEarth GeoJSON as polygons
+Cesium.GeoJsonDataSource.load(
+  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson",
+  {
+    clampToGround: false, // Prevent terrain clamping
+  }
+).then((dataSource) => {
+  viewer.dataSources.add(dataSource); 
+  
+  // Loop through all entities and style them
+  const entities = dataSource.entities.values;
+  for (let i = 0; i < entities.length; i++) {
+    const entity = entities[i];
+
+    // Check if entity has a polygon
+    if (entity.polygon) {
+      entity.polygon.material = Cesium.Color.RED.withAlpha(0.5); // Red fill with 50% opacity
+      entity.polygon.outline = true; // Enable outline
+      entity.polygon.outlineColor = Cesium.Color.WHITE; // Black outline color
+      entity.polygon.outlineWidth = 1.0; // Outline width
+
+      // Ensure polygons are flat for rendering
+      entity.polygon.height = 0; // Flat polygons
+      entity.polygon.extrudedHeight = 0; // Avoid extrusions
+      entity.polygon.perPositionHeight = false; // Disable terrain adjustment
+    }
+  }
+
+  // Zoom to fit all polygons
+  viewer.zoomTo(dataSource);
+});
+
+
+// Set camera to fit world view
 viewer.camera.setView({
-  destination: Cesium.Rectangle.fromDegrees(50, -40, 200, 10),
+  destination: Cesium.Rectangle.fromDegrees(-50, -90, 320, 60),
 });
