@@ -7,6 +7,6 @@ Interactive ocean viewer for ocean status (development for learning Cesium / jav
 To implement
 `ocean currents`  ‣ `aquamodis`
 
-![oceans](https://github.com/user-attachments/assets/85d52650-1e10-4ce2-bb53-8bafe1b2b9bc)
+![oceans](https://github.com/user-attachments/assets/82ea9ff6-922b-4fc4-b318-4560cc0b840a)
 
 
