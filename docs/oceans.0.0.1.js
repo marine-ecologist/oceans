@@ -1,6 +1,5 @@
 const viewer = new Cesium.Viewer("cesiumContainer", {
-  
-  baseLayerPicker: true,
+  baseLayerPicker: false,
   geocoder: false,
   timeline: false,
   animation: false,
@@ -19,6 +18,11 @@ scene.moon.show = false;
 // Remove credits
 viewer._cesiumWidget._creditContainer.style.display = "none";
 
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpZCI6MjY4NTE0LCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
+		
+const tileset = viewer.scene.primitives.add(
+  await Cesium.Cesium3DTileset.fromIonAssetId(2275207),
+);
 
 // Function to create WMS tile layers dynamically
 function createWMSTileLayer(metric) {
