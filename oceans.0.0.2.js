@@ -20,8 +20,8 @@ scene.moon.show = false;
 viewer._cesiumWidget._creditContainer.style.display = "none";
 
 Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpZCI6MjY4NTE0LCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
-		
-		
+
+Cesium.BingMapsApi.defaultKey = "Alv1EKBQ_szZVwQlUEazsdfZXHQOi7LdwsFeMm-91ULl-4pOfN5m8eatUPhcHVyS"
 
 
 // 1. Add 3D Tileset (Highest Rendering Priority)
