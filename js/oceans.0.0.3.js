@@ -33,7 +33,6 @@ document.addEventListener(
   { passive: true }
 );
 
-import { UrlTemplateImageryProvider } from "cesium";
 
 console.log(Cesium.UrlTemplateImageryProvider); // Should not be undefined
 
