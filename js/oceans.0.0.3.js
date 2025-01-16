@@ -1,3 +1,7 @@
+//Cesium.BingMapsApi.defaultKey = "Apg63g6vwyWR-4zUY315ML1yKH7j52KxhxID2iiwD02eSE1ENMXRhjxklby-3lQs";
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpZCI6MjY4NTE0LCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
+
+
 // Initialize the Cesium viewer
 const viewer = new Cesium.Viewer("cesiumContainer", {
   baseLayerPicker: false,
@@ -21,8 +25,6 @@ scene.moon.show = false;
 // Remove Cesium credits
 viewer._cesiumWidget._creditContainer.style.display = "none";
 
-// Cesium Ion Access Token
-Cesium.BingMapsApi.defaultKey = "Apg63g6vwyWR-4zUY315ML1yKH7j52KxhxID2iiwD02eSE1ENMXRhjxklby-3lQs";
 
 //
 document.addEventListener(
