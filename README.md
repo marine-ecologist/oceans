@@ -4,6 +4,8 @@
 
 Interactive ocean viewer for ocean status (development for learning Cesium / javascript) 
 
+[https://marine-ecologist.github.io/oceans/](https://marine-ecologist.github.io/oceans/)
+
 `coral bleaching` ‣ `sst` • `ssta` • `hotspots` • `baa` • `dhw`
 
 To implement
