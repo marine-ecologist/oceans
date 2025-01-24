@@ -1,23 +1,20 @@
-Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
+// Cesium setup
+Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpZCI6MjY4NTE0LCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
 
-// Initialize the Cesium viewer
 const viewer = new Cesium.Viewer("cesiumContainer", {
   baseLayerPicker: false,
+  geocoder: false,
   timeline: false,
   animation: false,
   homeButton: false,
   navigationHelpButton: false,
-  enablePickFeatures: true, // Enable picking for features
+  enablePickFeatures: false,
   infoBox: false,
-  geocoder: true, // Enable the geocoder (search box)
 });
 
-// Layer management
-let activeLayer = null;
-let noaaLayer = null;
-
-// Disable unnecessary visuals for performance and customization
 const scene = viewer.scene;
+
+// Disable unnecessary visuals
 scene.skyBox.show = false;
 scene.skyAtmosphere.show = false;
 scene.sun.show = false;
@@ -32,67 +29,36 @@ const styles = `
     image-rendering: smooth;
     image-rendering: -webkit-optimize-contrast;
   }
+
+  .tooltip {
+    position: absolute;
+    background: rgba(42, 42, 42, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    display: none;
+  }
 `;
 const styleTag = document.createElement("style");
 styleTag.textContent = styles;
 document.head.appendChild(styleTag);
 
-// Ensure the search bar is always open
-setTimeout(() => {
-  const geocoderInput = document.querySelector(".cesium-geocoder-input");
-  if (geocoderInput) {
-    geocoderInput.focus(); // Focus the search bar
-  }
-}, 500);
+// Tooltip for hover Lon/Lat
+const hoverTooltip = document.createElement("div");
+hoverTooltip.classList.add("tooltip");
+document.body.appendChild(hoverTooltip);
 
-// Set the camera to fit the global view
-viewer.camera.setView({
-  destination: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
-});
+// Tooltip for clicked data
+const clickTooltip = document.createElement("div");
+clickTooltip.classList.add("tooltip");
+document.body.appendChild(clickTooltip);
 
-// Add a real-time longitude/latitude display on mouse move with WMS values
-const entity = viewer.entities.add({
-  label: {
-    show: false,
-    showBackground: true,
-    font: "12px monospace",
-    horizontalOrigin: Cesium.HorizontalOrigin.LEFT,
-    verticalOrigin: Cesium.VerticalOrigin.TOP,
-    pixelOffset: new Cesium.Cartesian2(15, 0),
-  },
-});
-
-const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-handler.setInputAction((movement) => {
-  const cartesian = viewer.camera.pickEllipsoid(movement.endPosition, scene.globe.ellipsoid);
-  if (cartesian) {
-    const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
-    const longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(4);
-    const latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
-
-    // Update position and display longitude/latitude
-    entity.position = cartesian;
-    entity.label.show = true;
-    entity.label.text = `Lon: ${longitudeString}\u00B0\nLat: ${latitudeString}\u00B0`;
-
-    // Fetch WMS values if a noaaLayer exists
-    if (noaaLayer) {
-      const pickRay = scene.camera.getPickRay(movement.endPosition);
-      scene.imageryLayers.pickImageryLayerFeatures(pickRay, scene).then((features) => {
-        if (features && features.length > 0) {
-          const value = features[0].data || "N/A";
-          entity.label.text = `Lon: ${longitudeString}\u00B0\nLat: ${latitudeString}\u00B0\nValue: ${value}`;
-        } else {
-          entity.label.text = `Lon: ${longitudeString}\u00B0\nLat: ${latitudeString}\u00B0\nValue: No Data`;
-        }
-      }).catch((error) => {
-        console.error("Error picking WMS layer features:", error);
-      });
-    }
-  } else {
-    entity.label.show = false;
-  }
-}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+// Layer management
+let activeLayer = null;
+let noaaLayer = null;
 
 // Mapping NOAA metrics to names
 const noaaMetricNames = {
@@ -116,21 +82,14 @@ function createWMSTileLayer(metric) {
 
 // Function to switch layers
 function switchLayers(wmsMetric, noaaMetric) {
-  // Remove existing custom layers
-  if (activeLayer) {
-    viewer.imageryLayers.remove(activeLayer, false);
-  }
-  if (noaaLayer) {
-    viewer.imageryLayers.remove(noaaLayer, false);
-  }
+  if (activeLayer) viewer.imageryLayers.remove(activeLayer, false);
+  if (noaaLayer) viewer.imageryLayers.remove(noaaLayer, false);
 
-  // Add the WMS tile layer
   if (wmsMetric !== "none") {
     activeLayer = viewer.imageryLayers.addImageryProvider(createWMSTileLayer(wmsMetric));
-    activeLayer.alpha = 0.7; // Ensure transparency for WMS layer
+    activeLayer.alpha = 0.7;
   }
 
-  // Add the NOAA WMS layer
   if (noaaMetric !== "none") {
     noaaLayer = viewer.imageryLayers.addImageryProvider(
       new Cesium.WebMapServiceImageryProvider({
@@ -139,17 +98,78 @@ function switchLayers(wmsMetric, noaaMetric) {
         parameters: {
           transparent: true,
           format: "image/png",
-          time: "2025-01-01T12:00:00.000Z", // Static date for NOAA layer in ISO 8601
+          time: "2025-01-01T12:00:00.000Z",
         },
       })
     );
-    noaaLayer.alpha = 0; // NOAA layer is fully transparent by default
+    noaaLayer.alpha = 0.0;
   }
 }
 
-console.log("Active NOAA Layer:", noaaLayer);
+// Define the handler for click events
+const clickHandler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+clickHandler.setInputAction(async (click) => {
+  const pickRay = scene.camera.getPickRay(click.position);
+  const imageryLayerFeatures = await scene.imageryLayers.pickImageryLayerFeatures(pickRay, scene);
 
-// Toolbar for Layer Selection
+  const mouseX = click.position.x;
+  const mouseY = click.position.y;
+
+  if (imageryLayerFeatures && imageryLayerFeatures.length > 0) {
+    const rawText = imageryLayerFeatures[0].description;
+
+    const gridCentreLonMatch = rawText.match(/&lt;gridCentreLon&gt;([-0-9.]+)&lt;\/gridCentreLon&gt;/);
+    const gridCentreLatMatch = rawText.match(/&lt;gridCentreLat&gt;([-0-9.]+)&lt;\/gridCentreLat&gt;/);
+    const timeMatch = rawText.match(/&lt;time&gt;([\d-]+)T[\d:.]+Z&lt;\/time&gt;/);
+    const valueMatch = rawText.match(/&lt;value&gt;([-0-9.]+)&lt;\/value&gt;/);
+
+    if (gridCentreLonMatch && gridCentreLatMatch && timeMatch && valueMatch) {
+      const samplelon = parseFloat(gridCentreLonMatch[1]).toFixed(5);
+      const samplelat = parseFloat(gridCentreLatMatch[1]).toFixed(5);
+      const isoDate = timeMatch[1];
+      const [year, month, day] = isoDate.split("-");
+      const formattedDate = `${day}-${month}-${year}`;
+      const sampleval = parseFloat(valueMatch[1]).toFixed(2);
+      const metricName = noaaMetricNames[noaaLayer.imageryProvider.layers] || "Value";
+
+      // Update tooltip
+      clickTooltip.style.display = "block";
+      clickTooltip.style.left = `${mouseX + 15}px`;
+      clickTooltip.style.top = `${mouseY + 15}px`;
+      clickTooltip.innerHTML = `
+        Lon: ${samplelon}<br>
+        Lat: ${samplelat}<br>
+        ${metricName}: ${sampleval}
+      `;
+    }
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
+// Lon/Lat Hover Tracker
+const hoverHandler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+hoverHandler.setInputAction((movement) => {
+  const cartesian = viewer.camera.pickEllipsoid(movement.endPosition, scene.globe.ellipsoid);
+
+  if (cartesian) {
+    const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
+    const longitudeString = Cesium.Math.toDegrees(cartographic.longitude).toFixed(4);
+    const latitudeString = Cesium.Math.toDegrees(cartographic.latitude).toFixed(4);
+
+    // Update tooltip
+    hoverTooltip.style.display = "block";
+    hoverTooltip.style.left = `${movement.endPosition.x + 15}px`;
+    hoverTooltip.style.top = `${movement.endPosition.y + 15}px`;
+    hoverTooltip.innerHTML = `
+      
+      Lon: ${longitudeString}<br>
+      Lat: ${latitudeString}
+    `;
+  } else {
+    hoverTooltip.style.display = "none";
+  }
+}, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+// Add Toolbar
 const toolbar = document.createElement("div");
 toolbar.style.position = "absolute";
 toolbar.style.top = "10px";
@@ -160,7 +180,6 @@ toolbar.style.borderRadius = "5px";
 toolbar.style.color = "white";
 document.body.appendChild(toolbar);
 
-// Metrics for toolbar
 const metrics = [
   { name: "None", value: "none" },
   { name: "Sea Surface Temperature", value: "sst" },
@@ -171,47 +190,67 @@ const metrics = [
   { name: "Degree Heating Weeks", value: "dhw" },
 ];
 
-// Create buttons for toolbar
+const noaametrics = [
+  { name: "None", value: "none" },
+  { name: "Sea Surface Temperature", value: "CRW_SST" },
+  { name: "Sea Surface Temperature Anomaly", value: "CRW_SSTANOMALY" },
+  { name: "Sea Surface Temperature Trend", value: "CRW_SSTTREND" },
+  { name: "Hot Spots", value: "CRW_HOTSPOT" },
+  { name: "Bleaching Alert Area", value: "CRW_BAA" },
+  { name: "Degree Heating Weeks", value: "CRW_DHW" },
+];
+
+const metricToNoaa = {};
+metrics.forEach((metric, index) => {
+  metricToNoaa[metric.value] = noaametrics[index].value;
+});
+
+// Create vertically aligned buttons with fixed width
 metrics.forEach((metric) => {
   const button = document.createElement("button");
   button.textContent = metric.name;
-  button.style.margin = "5px";
-  button.style.padding = "8px";
+  button.style.display = "block"; // Align buttons vertically
+  button.style.margin = "5px auto"; // Add vertical margin and center align
+  button.style.padding = "5px 10px"; // Adjust padding for smaller buttons
+  button.style.fontSize = "10px"; // Reduce font size to 10px
   button.style.backgroundColor = "#555";
   button.style.color = "white";
   button.style.border = "none";
   button.style.borderRadius = "5px";
   button.style.cursor = "pointer";
+  button.style.width = "150px"; // Set fixed width for buttons
 
   button.onclick = () => {
     const selectedMetric = metric.value;
-    const selectedNoaaMetric = noaaMetricNames[selectedMetric] || "none";
-
-    // Switch the layers
+    const selectedNoaaMetric = metricToNoaa[selectedMetric];
     switchLayers(selectedMetric, selectedNoaaMetric);
-
-    console.log(`Selected Metric: ${selectedMetric}`);
-    console.log(`Selected NOAA Metric: ${selectedNoaaMetric}`);
   };
 
   toolbar.appendChild(button);
 });
 
-// Add slider for opacity under the buttons
-const opacitySlider = document.createElement("input");
-opacitySlider.type = "range";
-opacitySlider.min = 0;
-opacitySlider.max = 1;
-opacitySlider.step = 0.01;
-opacitySlider.value = 0.7; // Default value
+// Add Transparency Slider
+const sliderLabel = document.createElement("div");
+sliderLabel.textContent = "Transparency";
+sliderLabel.style.textAlign = "center";
+sliderLabel.style.color = "white";
+sliderLabel.style.margin = "10px 0";
+toolbar.appendChild(sliderLabel);
 
-opacitySlider.style.marginTop = "10px";
-opacitySlider.style.width = "90%";
-opacitySlider.oninput = () => {
+const slider = document.createElement("input");
+slider.type = "range";
+slider.min = "0";
+slider.max = "1";
+slider.step = "0.01";
+slider.value = "0.7"; // Default alpha value
+slider.style.width = "150px";
+slider.style.margin = "5px auto";
+slider.style.display = "block";
+
+slider.oninput = () => {
   if (activeLayer) {
-    activeLayer.alpha = parseFloat(opacitySlider.value); // Update layer opacity
-    console.log(`Layer opacity set to: ${opacitySlider.value}`);
+    activeLayer.alpha = parseFloat(slider.value);
   }
 };
 
-toolbar.appendChild(opacitySlider);
+toolbar.appendChild(slider);
