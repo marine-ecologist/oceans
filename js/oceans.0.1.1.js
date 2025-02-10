@@ -365,9 +365,19 @@ slider.oninput = () => {
 toolbar.appendChild(slider);
 
 // Set the camera to fit the global view
+// viewer.camera.setView({
+//   destination: Cesium.Rectangle.fromDegrees(-50, -80, 320, 60),
+// });
+
 viewer.camera.setView({
-  destination: Cesium.Rectangle.fromDegrees(-50, -80, 320, 60),
+  destination: Cesium.Cartesian3.fromDegrees(140, -8, 15000000),  // Center on Indonesia with max zoom
+  orientation: {
+    heading: Cesium.Math.toRadians(0),      // Direction the camera is facing (0 = North)
+    pitch: Cesium.Math.toRadians(-90),      // Look directly down
+    roll: 0,
+  },
 });
+
 
 // Geocoder customization
 const geocoderViewModel = viewer.geocoder.viewModel;
