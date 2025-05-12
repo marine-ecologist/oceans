@@ -1,0 +1,28 @@
+project:
+  type: website
+  output-dir: docs/
+  resources:
+    - quarto/
+    - cesium/js/oceans.0.1.1.js
+website:
+  title: "Oceans"
+  search: false
+  navbar:
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Development"
+        file: development.qmd
+      - icon: github
+        href: https://github.com/marine-ecologist/oceans
+        aria-label: GitHub
+
+format:
+  html:
+    theme: cyborg
+    page-layout: full
+    max-width: 24000px
+    toc: false
+execute:
+  echo: true
+  warning: false
