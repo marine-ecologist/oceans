@@ -9,8 +9,8 @@ website:
   search: false
   navbar:
     left:
-      - text: "Home"
-        file: index.qmd
+      - text: "About"
+        file: about.qmd
       - text: "Development"
         file: development.qmd
       - icon: github
