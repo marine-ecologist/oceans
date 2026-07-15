@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Oceans 0.1.1 – Oceans</title>
+<title>d3 – Oceans</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,19 +23,19 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../docs/site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../docs/site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../docs/site_libs/clipboard/clipboard.min.js"></script>
-<script src="../docs/site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../docs/site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../docs/site_libs/quarto-html/popper.min.js"></script>
-<script src="../docs/site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../docs/site_libs/quarto-html/anchor.min.js"></script>
-<link href="../docs/site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../docs/site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../docs/site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../docs/site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../docs/site_libs/bootstrap/bootstrap-139760d7c2b45b71cf6fb5fb69731804.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-139760d7c2b45b71cf6fb5fb69731804.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -101,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Oceans 0.1.1</h1>
+<h1 class="title">d3</h1>
 </div>
 
 
@@ -118,72 +118,26 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<style>
- 
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-
-  .quarto-title-block, 
-  main > div:first-child {
-    display: none !important; /* Hides title block */
-  }
-
-  main.content {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-
-  .column-screen {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: calc(100vh - 56px); /* 56px is default navbar height */
-  }
-
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  
-   /* Turn navbar black */
-  .navbar {
-    background-color: #202020 !important;
-  }
-
-  /* Optional: Make navbar text white */
-  .navbar a,
-  .navbar-brand,
-  .navbar-nav > li > a {
-    color: white !important;
-  }
-
-  /* Optional: Change hover/focus colors */
-  .navbar a:hover,
-  .navbar a:focus {
-    color: #ddd !important;
-  }
-
-  /* Optional: remove border/shadow */
-  .navbar {
-    border: none !important;
-    box-shadow: none !important;
-  }
+<section id="d3-v0.0.1" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="d3-v0.0.1">d3 v0.0.1</h2>
+<section id="interactive-map" class="level3 column-page">
+<h3 class="anchored" data-anchor-id="interactive-map">Interactive Map</h3>
+<p><iframe src="d3/index_0.0.1.html" frameborder="0" style="width:800px; height:60vh; border:none; display:inline-block;"> </iframe></p>
+<hr>
+<p>Visualizes NOAA Coral Reef Watch DHW (Degree Heating Weeks) data from a NetCDF4 .nc file as an interactive global map using D3.js and h5wasm.</p>
+<ol type="1">
+<li><p>Load Libraries: • Uses h5wasm to read HDF5/NetCDF4 files directly in the browser. • Uses d3 for data-driven map visualization.</p></li>
+<li><p>Load Remote DHW Dataset: • Fetches a daily NOAA CoralTemp NetCDF file for March 30, 2025. • Saves it as “dhw.nc” in the browser’s virtual file system.</p></li>
+<li><p>Parse NetCDF File: • Opens the file with h5wasm.File(…). • Extracts: • degree_heating_week values • Latitude (lat) and longitude (lon) dimensions.</p></li>
+<li><p>Extract GeoJSON Points: • Iterates through every 20th pixel to reduce density. • Skips invalid or missing values. • Creates a GeoJSON FeatureCollection of points with: • Coordinates • DHW values</p></li>
+<li><p>Render with D3: • Sets up a geoNaturalEarth1 map projection. • Draws each point as a colored circle scaled by DHW. • Color uses the YlOrRd (Yellow–Orange–Red) gradient.</p></li>
+<li><p>Add Tooltip: • Shows lat, lon, and DHW on hover.</p></li>
+<li><p>Add Legend: • Horizontal color bar showing DHW scale from 0–12 °C-weeks.</p></li>
+</ol>
 
 
-
-</style>
-<div class="column-screen">
-<iframe src="/cesium/globe.html" frameborder="0" style="width:100%;height:100vh;border:none;display:block">
-</iframe>
-</div>
-
-
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

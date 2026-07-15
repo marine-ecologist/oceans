@@ -1,0 +1,37 @@
+---
+title: "d3"
+format: html
+page-layout: full
+---
+
+## d3 v0.0.1
+
+:::{.column-page}
+
+### Interactive Map
+
+
+  <iframe src="d3/index_0.0.1.html" 
+          frameborder="0" 
+          style="width:800px; height:60vh; border:none; display:inline-block;">
+  </iframe>
+
+---
+
+Visualizes NOAA Coral Reef Watch DHW (Degree Heating Weeks) data from a NetCDF4 .nc file as an interactive global map using D3.js and h5wasm.
+
+1.  Load Libraries: • Uses h5wasm to read HDF5/NetCDF4 files directly in the browser. • Uses d3 for data-driven map visualization.
+
+2.  Load Remote DHW Dataset: • Fetches a daily NOAA CoralTemp NetCDF file for March 30, 2025. • Saves it as "dhw.nc" in the browser’s virtual file system.
+
+3.  Parse NetCDF File: • Opens the file with h5wasm.File(...). • Extracts: • degree_heating_week values • Latitude (lat) and longitude (lon) dimensions.
+
+4.  Extract GeoJSON Points: • Iterates through every 20th pixel to reduce density. • Skips invalid or missing values. • Creates a GeoJSON FeatureCollection of points with: • Coordinates • DHW values
+
+5.  Render with D3: • Sets up a geoNaturalEarth1 map projection. • Draws each point as a colored circle scaled by DHW. • Color uses the YlOrRd (Yellow–Orange–Red) gradient.
+
+6.  Add Tooltip: • Shows lat, lon, and DHW on hover.
+
+7.  Add Legend: • Horizontal color bar showing DHW scale from 0–12 °C-weeks.
+
+

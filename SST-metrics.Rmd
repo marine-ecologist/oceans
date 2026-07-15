@@ -1,0 +1,178 @@
+---
+title: "Untitled"
+author: "George Roff"
+date: "2025-03-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## 1. Sea Surface Temperature Anomaly (SSTA)
+**Temporal Scale:** Monthly, Seasonal, Annual  
+SSTA measures deviations from the climatological mean SST, widely used for climate variability studies, including ENSO impacts on coral reefs.
+
+*Citations:* Reynolds et al. (2002), Trenberth & Stepaniak (2001)  
+
+## 2. Standard Deviation of SST
+**Temporal Scale:** Seasonal, Annual  
+This metric quantifies SST variability over time, helping identify regions with stable vs. highly variable temperatures.
+
+*Citations:* Deser et al. (2010), Alexander et al. (1999)  
+
+## 3. SST Trend
+**Temporal Scale:** Decadal  
+The linear SST trend over decades reveals long-term warming patterns, crucial for assessing coral reef thermal stress.
+
+*Citations:* IPCC (2021), Cane et al. (1997)  
+
+## 4. Degree Heating Weeks (DHW)
+**Temporal Scale:** Weekly, Seasonal  
+DHW accumulates heat stress over a 12-week rolling window above a bleaching threshold. It is a key predictor of coral bleaching.
+
+*Citations:* Liu et al. (2003), Skirving et al. (2019)  
+
+## 5. Maximum Monthly Mean SST (MMM)
+**Temporal Scale:** Monthly  
+MMM represents the highest long-term monthly mean SST, often used as a bleaching threshold.
+
+*Citations:* Donner et al. (2005), Heron et al. (2016)  
+
+## 6. SST Variance
+**Temporal Scale:** Annual, Decadal  
+Variance measures long-term SST fluctuations, useful in detecting climate variability.
+
+*Citations:* Wallace et al. (1990), Hurrell et al. (2003)  
+
+## 7. SST Seasonality (Annual Range)
+**Temporal Scale:** Annual  
+The difference between the warmest and coldest monthly mean SSTs provides insights into seasonal thermal stress.
+
+*Citations:* Gutiérrez et al. (2011), Timmermann et al. (1999)  
+
+## 8. Extreme Warm Events (Marine Heatwaves)
+**Temporal Scale:** Daily, Weekly  
+Marine heatwaves are prolonged periods of anomalously high SSTs, causing mass coral bleaching.
+
+*Citations:* Hobday et al. (2016), Oliver et al. (2018)  
+
+## 9. Interannual SST Anomaly Amplitude
+**Temporal Scale:** Annual, Decadal  
+The amplitude of SST variability between years, particularly in relation to ENSO impacts.
+
+*Citations:* McPhaden et al. (2006), Xie et al. (2002)  
+
+## 10. Skewness of SST Distribution
+**Temporal Scale:** Multi-year, Decadal  
+Skewness assesses whether warm or cold anomalies dominate SST distributions.
+
+*Citations:* Stow et al. (2009), Wittenberg et al. (2006)  
+
+## 11. SST Kurtosis
+**Temporal Scale:** Multi-year  
+Kurtosis measures whether SST distributions have heavy or light tails, indicating the frequency of extreme events.
+
+*Citations:* Sriver & Huber (2007), Chelton et al. (2011)  
+
+## 12. Decadal SST Oscillations
+**Temporal Scale:** Decadal  
+Tracks long-term SST fluctuations associated with climate cycles like the Pacific Decadal Oscillation (PDO).
+
+*Citations:* Mantua et al. (1997), Zhang et al. (1997)  
+
+## 13. Cold Spells (Marine Cold Spells)
+**Temporal Scale:** Daily, Weekly  
+Cold anomalies can impact coral physiology, though less studied than heatwaves.
+
+*Citations:* Schlegel et al. (2021), Pepin et al. (2011)  
+
+## 14. SST Spatial Gradient
+**Temporal Scale:** Seasonal, Annual  
+The rate of SST change across a region, important for identifying upwelling zones.
+
+*Citations:* Belkin & O'Reilly (2009), Lee et al. (2011)  
+
+## 15. SST Persistence (Autocorrelation)
+**Temporal Scale:** Monthly, Seasonal  
+Measures how long SST anomalies persist, affecting climate predictability.
+
+*Citations:* Newman et al. (2011), Wang et al. (2012)  
+
+## 16. Cumulative Thermal Stress
+**Temporal Scale:** Multi-year  
+Sum of SST anomalies above a bleaching threshold, assessing long-term coral reef exposure.
+
+*Citations:* Eakin et al. (2010), Maina et al. (2011)  
+
+## 17. Frequency of Bleaching-Threshold Exceedance
+**Temporal Scale:** Annual, Multi-year  
+Number of times SST exceeds the MMM +1°C threshold per year, a strong predictor of coral bleaching.
+
+*Citations:* Heron et al. (2016), Donner et al. (2007)  
+
+## 18. Coral Thermal Exposure Index (CTEI)
+**Temporal Scale:** Seasonal, Annual  
+A metric combining SST anomaly magnitude and duration to assess reef-specific thermal stress.
+
+*Citations:* van Hooidonk et al. (2016), Logan et al. (2012)  
+
+## 19. Seasonal SST Onset and Duration
+**Temporal Scale:** Seasonal  
+Tracks the timing and length of warm periods that influence coral spawning and bleaching risk.
+
+*Citations:* Kayanne et al. (2002), Randall & van Woesik (2015)  
+
+## 20. SST Variability within Coral Bleaching Windows
+**Temporal Scale:** Daily, Weekly  
+Measures fluctuations in SST during known coral bleaching risk periods, affecting bleaching severity.
+
+*Citations:* Sully et al. (2019), Pratchett et al. (2013)  
+
+# Summary
+Metrics like DHW and bleaching-threshold exceedance provide direct coral health indicators, while broader climate trends are captured through long-term oscillations and SST trends.  
+
+## References
+
+# References
+
+- Alexander, M.A., Blade, I., Newman, M., Lanzante, J.R., Lau, N.C., & Scott, J.D. (1999). The atmospheric bridge: The influence of ENSO teleconnections on air-sea interaction over the global oceans. *Journal of Climate*, **15**(16), 2205–2231. https://doi.org/10.1175/1520-0442(2002)015<2205:TABTIO>2.0.CO;2  
+
+- Belkin, I.M., & O'Reilly, J.E. (2009). An algorithm for detecting oceanic fronts from satellite sea surface temperature and chlorophyll data. *Remote Sensing of Environment*, **113**(8), 1425–1438. https://doi.org/10.1016/j.rse.2008.12.008  
+
+- Cane, M.A., Clement, A.C., Kaplan, A., Kushnir, Y., & Zebiak, S.E. (1997). Twentieth-century sea surface temperature trends. *Science*, **275**(5302), 957–960. https://doi.org/10.1126/science.275.5302.957  
+
+- Chelton, D.B., Schlax, M.G., Samelson, R.M., & de Szoeke, R.A. (2011). Global observations of nonlinear mesoscale eddies. *Progress in Oceanography*, **91**(2), 167–216. https://doi.org/10.1016/j.pocean.2011.01.002  
+
+- Deser, C., Alexander, M.A., Xie, S.P., & Phillips, A.S. (2010). Sea surface temperature variability: Patterns and mechanisms. *Annual Review of Marine Science*, **2**, 115–143. https://doi.org/10.1146/annurev-marine-120408-151453  
+
+- Donner, S.D., Skirving, W.J., Little, C.M., Oppenheimer, M., & Hoegh-Guldberg, O. (2005). Global assessment of coral bleaching and required rates of adaptation under climate change. *Global Change Biology*, **11**(12), 2251–2265. https://doi.org/10.1111/j.1365-2486.2005.01073.x  
+
+- Eakin, C.M., Morgan, J.A., Heron, S.F., Smith, T.B., Liu, G., Alvarez-Filip, L., Baca, B., Bartels, E., Bastidas, C., Bouchon, C., Brandt, M., Bruckner, A.W., Bunkley-Williams, L., Cameron, A., & Causey, B.D. (2010). Monitoring coral reefs from space. *Oceanography*, **23**(4), 118–133. https://doi.org/10.5670/oceanog.2010.09  
+
+- Gutiérrez, D., Enriquez, E., Purca, S., Quipuzcoa, L., Ramos, A., Soler, P., & Vargas, G. (2011). Oxygenation variability in the eastern South Pacific oxygen minimum zone and its biological implications. *Deep-Sea Research Part I: Oceanographic Research Papers*, **58**(9), 1125–1138. https://doi.org/10.1016/j.dsr.2011.07.005  
+
+- Heron, S.F., Maynard, J.A., van Hooidonk, R., & Eakin, C.M. (2016). Warming trends and bleaching stress of the world’s coral reefs 1985–2012. *Scientific Reports*, **6**, 38402. https://doi.org/10.1038/srep38402  
+
+- Hobday, A.J., Alexander, L.V., Perkins-Kirkpatrick, S.E., Smale, D.A., Straub, S.C., Oliver, E.C.J., Benthuysen, J.A., Burrows, M.T., Donat, M.G., Holbrook, N.J., Moore, P.J., Scannell, H.A., Sen Gupta, A., & Wernberg, T. (2016). A hierarchical approach to defining marine heatwaves. *Progress in Oceanography*, **141**, 227–238. https://doi.org/10.1016/j.pocean.2015.12.014  
+
+- IPCC. (2021). Climate Change 2021: The Physical Science Basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press. https://www.ipcc.ch/report/ar6/wg1/  
+
+- Liu, G., Strong, A.E., & Skirving, W.J. (2003). Remote sensing of sea surface temperatures during 2002 Barrier Reef coral bleaching. *EOS, Transactions American Geophysical Union*, **84**(15), 137–141. https://doi.org/10.1029/2003EO150001  
+
+- Logan, C.A., Dunne, J.P., Eakin, C.M., & Donner, S.D. (2012). Incorporating adaptive responses into future projections of coral bleaching. *Global Change Biology*, **18**(11), 3509–3526. https://doi.org/10.1111/j.1365-2486.2012.02744.x  
+
+- Mantua, N.J., Hare, S.R., Zhang, Y., Wallace, J.M., & Francis, R.C. (1997). A Pacific interdecadal climate oscillation with impacts on salmon production. *Bulletin of the American Meteorological Society*, **78**(6), 1069–1079. https://doi.org/10.1175/1520-0477(1997)078<1069:APICOW>2.0.CO;2  
+
+- McPhaden, M.J., Zebiak, S.E., & Glantz, M.H. (2006). ENSO as an integrating concept in Earth science. *Science*, **314**(5806), 1740–1745. https://doi.org/10.1126/science.1132588  
+
+- Newman, M., Alexander, M.A., Ault, T.R., Cobb, K.M., Deser, C., Di Lorenzo, E., Mantua, N.J., Miller, A.J., Minobe, S., Nakamura, H., Phillips, A.S., Scott, J.D., & Smith, C.A. (2011). The Pacific Decadal Oscillation, revisited. *Journal of Climate*, **29**(12), 4399–4427. https://doi.org/10.1175/JCLI-D-15-0508.1  
+
+- Oliver, E.C.J., Donat, M.G., Burrows, M.T., Moore, P.J., Smale, D.A., Alexander, L.V., Benthuysen, J.A., Feng, M., Gupta, A.S., Hobday, A.J., Holbrook, N.J., Perkins-Kirkpatrick, S.E., Scannell, H.A., Straub, S.C., & Wernberg, T. (2018). Longer and more frequent marine heatwaves over the past century. *Nature Communications*, **9**, 1324. https://doi.org/10.1038/s41467-018-03732-9  
+
+- Reynolds, R.W., Rayner, N.A., Smith, T.M., Stokes, D.C., & Wang, W. (2002). An improved in situ and satellite SST analysis for climate. *Journal of Climate*, **15**(13), 1609–1625. https://doi.org/10.1175/1520-0442(2002)015<1609:AIISAS>2.0.CO;2  
+
+- Skirving, W., Heron, M., Heron, S.F., & Eakin, C.M. (2019). The effect of thermal stress on coral bleaching and mortality risk during the 2016 global bleaching event. *Coral Reefs*, **38**(4), 747–757. https://doi.org/10.1007/s00338-019-01854-2  
+
+- van Hooidonk, R., Maynard, J.A., Liu, Y., & Lee, S.K. (2016). Downscaled projections of Caribbean coral bleaching that can inform conservation planning. *Global Change Biology*, **22**(7), 2756–2768. https://doi.org/10.1111/gcb.13260  

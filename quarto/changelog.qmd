@@ -1,0 +1,85 @@
+---
+title: "Changelog"
+format: html
+editor: visual
+---
+
+## 
+
+## Version History
+
+### v0.1.1
+
+-   Preloads `dhw` layer on startup
+
+-   Camera zoom preset to Indonesia
+
+-   Tooltip formatting cleanup
+
+-   Active button state + hover highlighting improved
+
+-   Default date: static date − 2 days (stable availability)
+
+-   Padding and layout polish (buttons, sliders)
+
+### v0.1.0
+
+-   Adds live date picker widget
+
+-   Dynamic WMS switching based on metric and date
+
+-   Buttons arranged in rows with spacing
+
+-   Improved tooltip styling (lat/lon + data)
+
+-   Adds custom geocoder handler
+
+### v0.0.6
+
+-   Adds CRW PNG tile support (GCS format)
+
+-   WMS + tile dual-layer structure
+
+-   Parses GetFeatureInfo XML to extract readable values
+
+-   Metric IDs mapped to display names
+
+### v0.0.5
+
+-   Modularized WMS/tile layer control
+
+-   Picker click/tooltip more robust
+
+-   Alpha slider now tracks active layer
+
+### v0.0.4
+
+-   Adds tooltip GetFeatureInfo support
+
+-   Implements lat/lon hover display
+
+-   Layer click sampling integrated
+
+### v0.0.3.1
+
+-   Minor fixes to 0.0.3
+
+-   Button interaction more stable
+
+### v0.0.3
+
+-   Adds metric buttons (SST, DHW, SSTA, BAA)
+
+-   Introduces dynamic layer switching
+
+### v0.0.2
+
+-   Alpha slider added
+
+-   Simple toggle between hardcoded WMS layers
+
+### v0.0.1
+
+-   Initial setup: Cesium viewer with single hardcoded WMS
+
+-   No interaction, static display only

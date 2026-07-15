@@ -1,9 +1,10 @@
 project:
   type: website
-  output-dir: docs/
+  output-dir: docs
   resources:
     - quarto/
     - cesium/js/oceans.0.1.1.js
+
 website:
   title: "Oceans"
   search: false
@@ -12,7 +13,12 @@ website:
       - text: "About"
         file: about.qmd
       - text: "Development"
-        file: development.qmd
+        menu:
+          - text: "Changelog"
+            file: changelog.qmd
+          - text: "D3 implementation"
+            file: development.qmd
+    right:
       - icon: github
         href: https://github.com/marine-ecologist/oceans
         aria-label: GitHub
@@ -23,6 +29,7 @@ format:
     page-layout: full
     max-width: 24000px
     toc: false
+
 execute:
   echo: true
   warning: false

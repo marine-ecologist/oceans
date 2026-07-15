@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRW DHW Viewer</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    #controlPanel, #controlPanel2 {
+      position: absolute;
+      background: rgba(42, 42, 42, 0.8);
+      padding: 10px;
+      border-radius: 6px;
+      color: white;
+      font-size: 13px;
+      z-index: 999;
+    }
+    #controlPanel { top: 10px; left: 10px; }
+    #controlPanel2 { top: 10px; right: 10px; }
+    #controlPanel label, #controlPanel2 label {
+      display: block;
+      margin-top: 6px;
+    }
+    #dateOverlay {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 14px;
+      pointer-events: none;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+
+  <div id="controlPanel">
+    <label>View:
+      <select id="presetView">
+        <option value="australia" selected>Australia</option>
+        <option value="queensland">Queensland</option>
+        <option value="wa">Western Australia</option>
+      </select>
+    </label>
+    <label>Start <input type="date" id="startDate" value="2023-12-30"></label>
+    <label>End <input type="date" id="endDate" value="2024-02-01"></label>
+    <label>Speed (days/sec): <input type="number" id="speed" min="1" max="20" value="8"></label>
+    <button id="apply">Apply</button>
+  </div>
+
+  <div id="controlPanel2">
+    <label><input type="checkbox" id="showText" checked> Show Date Overlay</label>
+    <label>x % <input type="number" id="overlayX" min="0" max="100" value="50" style="width:60px;"></label>
+    <label>y % <input type="number" id="overlayY" min="0" max="100" value="50" style="width:60px;"></label>
+    <label>Font Size:
+      <select id="fontSize">
+        <option value="12px">12px</option>
+        <option value="14px" selected>14px</option>
+        <option value="16px">16px</option>
+        <option value="18px">18px</option>
+        <option value="20px">20px</option>
+      </select>
+    </label>
+  </div>
+
+  <div id="dateOverlay"></div>
+
+  <script>
+    Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJhZTNmOGJmZC0zOTcwLTRhMzYtOTEyMC1jYjc5Yzc5YTcwODMiLCJpZCI6MjY4NTE0LCJpYXQiOjE3MzY3MTg2NzB9.X6fIDdZkrPlD5AGjASkJ-IerCu1BLe8IIQLrwJku4LQ";
+
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      timeline: true,
+      animation: true,
+      baseLayerPicker: false,
+      homeButton: false,
+      sceneModePicker: false,
+      navigationHelpButton: false,
+      infoBox: false,
+      geocoder: false
+    });
+
+    viewer.scene.skyBox.show = false;
+    viewer.scene.sun.show = false;
+    viewer.scene.moon.show = false;
+    viewer.scene.skyAtmosphere.show = false;
+    viewer._cesiumWidget._creditContainer.style.display = "none";
+
+    const imageryLayers = {};
+    const dates = [];
+    const dateOverlay = document.getElementById("dateOverlay");
+
+    function loadLayers(startISO, stopISO, multiplier) {
+      Object.values(imageryLayers).forEach(layer => viewer.imageryLayers.remove(layer));
+      Object.keys(imageryLayers).forEach(k => delete imageryLayers[k]);
+      dates.length = 0;
+
+      const start = Cesium.JulianDate.fromIso8601(startISO + "T00:00:00Z");
+      const stop = Cesium.JulianDate.fromIso8601(stopISO + "T00:00:00Z");
+      const numDays = Cesium.JulianDate.daysDifference(stop, start);
+
+      viewer.clock.startTime = start.clone();
+      viewer.clock.stopTime = stop.clone();
+      viewer.clock.currentTime = start.clone();
+      viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+      viewer.clock.multiplier = 86400 * multiplier;
+      viewer.timeline.zoomTo(start, stop);
+
+      for (let i = 0; i <= numDays; i++) {
+        const julian = Cesium.JulianDate.addDays(start, i, new Cesium.JulianDate());
+        const gregorian = Cesium.JulianDate.toDate(julian);
+        const ymd = gregorian.toISOString().split("T")[0].replace(/-/g, "");
+        dates.push(ymd);
+        const layer = viewer.imageryLayers.addImageryProvider(
+          new Cesium.UrlTemplateImageryProvider({
+            url: `https://storage.googleapis.com/production-coral-tiles/crw/dhw/${ymd}/{z}/{x}/{y}.png`
+          })
+        );
+        layer.alpha = 0.0;
+        imageryLayers[ymd] = layer;
+      }
+    }
+
+    viewer.clock.onTick.addEventListener(() => {
+      const current = Cesium.JulianDate.toDate(viewer.clock.currentTime);
+      const ymd = current.toISOString().split("T")[0].replace(/-/g, "");
+      const day = current.getUTCDate().toString().padStart(2, "0");
+      const month = (current.getUTCMonth() + 1).toString().padStart(2, "0");
+      const year = current.getUTCFullYear();
+
+      if (document.getElementById("showText")?.checked) {
+        dateOverlay.textContent = `${day}/${month}/${year}`;
+        dateOverlay.style.display = "block";
+      } else {
+        dateOverlay.style.display = "none";
+      }
+
+      Object.entries(imageryLayers).forEach(([key, layer]) => {
+        layer.alpha = (key === ymd) ? 1.0 : 0.0;
+      });
+    });
+
+    document.getElementById("apply").onclick = () => {
+      const xPercent = parseInt(document.getElementById("overlayX").value);
+      const yPercent = parseInt(document.getElementById("overlayY").value);
+      const font = document.getElementById("fontSize").value;
+      dateOverlay.style.left = `${xPercent}%`;
+      dateOverlay.style.bottom = `${100 - yPercent}%`;
+      dateOverlay.style.fontSize = font;
+
+      const startVal = document.getElementById("startDate").value;
+      const endVal = document.getElementById("endDate").value;
+      const speedVal = parseInt(document.getElementById("speed").value);
+      loadLayers(startVal, endVal, speedVal);
+    };
+
+    document.getElementById("presetView").onchange = () => {
+      const view = document.getElementById("presetView").value;
+
+      let destination, pitch, roll;
+
+      switch (view) {
+        case "queensland":
+          destination = Cesium.Cartesian3.fromDegrees(145, -25, 3400000);
+          pitch = -Math.PI / 2.2;
+          roll = 0;
+          break;
+        case "wa":
+          destination = Cesium.Cartesian3.fromDegrees(120, -25, 6000000);
+          heading: 0;
+          pitch = -Math.PI / 2.2;
+          roll = +12 * Math.PI / 180;
+          break;
+        default:
+          destination = Cesium.Cartesian3.fromDegrees(136, -27, 12000000);
+          pitch = -Math.PI / 1.98;
+          roll = 0;
+      }
+
+      viewer.camera.setView({
+        destination: destination,
+        orientation: {
+          heading: 0,
+          pitch: pitch,
+          roll: roll
+        }
+      });
+    };
+
+    // Default load and view
+    loadLayers("2023-12-30", "2024-02-01", 8);
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(136, -27, 12000000),
+      orientation: {
+        heading: 0,
+        pitch: -Math.PI / 1.98,
+        roll: 0
+      }
+    });
+  </script>
+</body>
+</html>

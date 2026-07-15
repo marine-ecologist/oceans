@@ -1,0 +1,81 @@
+  const viewer = new Cesium.Viewer('cesiumContainer', {
+      timeline: true,
+      animation: true,
+      baseLayerPicker: false,
+      homeButton: false,
+      sceneModePicker: false,
+      navigationHelpButton: false,
+      infoBox: false,
+      geocoder: false
+    });
+
+    viewer.scene.skyBox.show = false;
+    viewer.scene.sun.show = false;
+    viewer.scene.moon.show = false;
+    viewer.scene.skyAtmosphere.show = false;
+    viewer._cesiumWidget._creditContainer.style.display = "none";
+
+    const start = Cesium.JulianDate.fromIso8601("2023-12-30T00:00:00Z");
+    const stop = Cesium.JulianDate.fromIso8601("2024-02-01T00:00:00Z");
+    viewer.clock.multiplier = 86400 * 8; // 2 days per second
+    
+    viewer.clock.startTime = start.clone();
+    viewer.clock.stopTime = stop.clone();
+    viewer.clock.currentTime = start.clone();
+    viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
+    viewer.timeline.zoomTo(start, stop);
+
+    const dateOverlay = document.createElement("div");
+    dateOverlay.style.position = "absolute";
+    dateOverlay.style.bottom = "42%";
+    dateOverlay.style.left = "48%";
+    dateOverlay.style.transform = "translateX(-50%)";
+    dateOverlay.style.padding = "6px 12px";
+    dateOverlay.style.background = "rgba(0, 0, 0, 0.25)";
+    dateOverlay.style.color = "white";
+    dateOverlay.style.fontSize = "14px";
+    dateOverlay.style.fontFamily = "monospace";
+    dateOverlay.style.borderRadius = "4px";
+    dateOverlay.style.pointerEvents = "none";
+    document.body.appendChild(dateOverlay);
+
+    const imageryLayers = {};
+    const dates = [];
+
+     const numDays = Cesium.JulianDate.daysDifference(stop, start);
+    for (let i = 0; i <= numDays; i++) {
+      const julian = Cesium.JulianDate.addDays(start, i, new Cesium.JulianDate());
+      const gregorian = Cesium.JulianDate.toDate(julian);
+      const ymd = gregorian.toISOString().split("T")[0].replace(/-/g, "");
+      dates.push(ymd);
+
+      const layer = viewer.imageryLayers.addImageryProvider(
+        new Cesium.UrlTemplateImageryProvider({
+          url: `https://storage.googleapis.com/production-coral-tiles/crw/dhw/${ymd}/{z}/{x}/{y}.png`
+        })
+      );
+      layer.alpha = 0.0;
+      imageryLayers[ymd] = layer;
+    }
+       viewer.clock.onTick.addEventListener(() => {
+      const current = Cesium.JulianDate.toDate(viewer.clock.currentTime);
+      const ymd = current.toISOString().split("T")[0].replace(/-/g, "");
+      const day = current.getUTCDate().toString().padStart(2, "0");
+      const month = (current.getUTCMonth() + 1).toString().padStart(2, "0");
+      const year = current.getUTCFullYear();
+
+      dateOverlay.textContent = `${day}/${month}/${year}`;
+
+      Object.entries(imageryLayers).forEach(([key, layer]) => {
+        layer.alpha = (key === ymd) ? 1.0 : 0.0;
+      });
+    });
+
+    viewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(136, -17, 12000000),
+      orientation: {
+        heading: 0,
+        pitch: -Math.PI / 1.98,
+        roll: 0
+      }
+    });

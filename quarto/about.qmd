@@ -5,3 +5,7 @@ editor: visual
 ---
 
 ## 
+
+Loose project goals: more efficient data visualisation for marine satellite data using cesium / d3.
+
+Inspired by <https://earth.nullschool.net>

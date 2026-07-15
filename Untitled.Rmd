@@ -1,0 +1,96 @@
+---
+title: "Untitled"
+author: "George Roff"
+date: "2025-01-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(shiny)
+library(leaflet)
+
+# Define the UI
+ui <- fluidPage(
+  titlePanel("Dynamic Coral Reef Watch Map Viewer"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons(
+        inputId = "metric",
+        label = "Select Metric:",
+        choices = c("Sea Surface Temperature" = "sst",
+                    "Sea Surface Temperature Anomaly" = "ssta",
+                    "Sea Surface Temperature Threshold" = "sstt",
+                    "Hot Spots" = "hs",
+                    "Bleaching Alert Area" = "baa",
+                    "Degree Heating Weeks" = "dhw"),
+        selected = "dhw"
+      ),
+      dateInput(
+        inputId = "date",
+        label = "Select Date:",
+        value = Sys.Date(),
+        format = "yyyy-mm-dd"
+      )
+    ),
+    
+    mainPanel(
+      leafletOutput("map", height = 600)
+    )
+  )
+)
+
+# Define the server
+server <- function(input, output, session) {
+  # Reactive expression to create the tile URL
+  tile_url <- reactive({
+    selected_date <- if (input$date == Sys.Date()) "latest" else format(input$date, "%Y%m%d")
+    paste0("https://storage.googleapis.com/production-coral-tiles/crw/", input$metric, "/", selected_date, "/{z}/{x}/{y}.png")
+  })
+  
+  # Render the leaflet map
+  output$map <- renderLeaflet({
+    leaflet() %>%
+      # Add the Esri World Imagery basemap
+      addProviderTiles(providers$Esri.WorldImagery, group = "Esri World Imagery") %>%
+      
+      # Add the Coral Reef Watch tiles as an overlay
+      addTiles(
+        urlTemplate = tile_url(),
+        attribution = "Data from Coral Reef Watch (CRW)",
+        group = "CRW Tiles",
+        options = tileOptions(tms = FALSE)
+      ) %>%
+      
+      # Add layer controls
+      addLayersControl(
+        baseGroups = c("Esri World Imagery"), # Only Esri World Imagery as the basemap
+        overlayGroups = c("CRW Tiles"),
+        options = layersControlOptions(collapsed = FALSE)
+      ) %>%
+      
+      setView(lng = 0, lat = 0, zoom = 2) # Center the map globally
+  })
+  
+  # Update the Coral Reef Watch tiles dynamically when inputs change
+  observe({
+    leafletProxy("map") %>%
+      clearGroup("CRW Tiles") %>%
+      addTiles(
+        urlTemplate = tile_url(),
+        attribution = "Data from Coral Reef Watch (CRW)",
+        group = "CRW Tiles",
+        options = tileOptions(tms = FALSE)
+      )
+  })
+}
+
+# Run the app
+shinyApp(ui = ui, server = server)
+
+```

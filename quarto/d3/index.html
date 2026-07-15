@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DHW Viewer with CesiumJS</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html, body, #cesiumContainer {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+<div id="cesiumContainer"></div>
+<script type="module">
+  import h5wasm from "https://cdn.jsdelivr.net/npm/h5wasm@0.6.9/dist/esm/hdf5_hl.js";
+  import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+  const { FS } = await h5wasm.ready;
+
+  const url = "https://www.ncei.noaa.gov/data/oceans/crw/5km/v3.1/nc/v1.0/daily/dhw/2025/ct5km_dhw_v3.1_20250330.nc";
+  const response = await fetch(url);
+  const arrayBuffer = await response.arrayBuffer();
+  FS.writeFile("dhw.nc", new Uint8Array(arrayBuffer));
+
+  const file = new h5wasm.File("dhw.nc", "r");
+  const dhw = file.get("degree_heating_week");
+
+  const latPath = dhw.get_attached_scales(1)[0];
+  const lonPath = dhw.get_attached_scales(2)[0];
+  const lat = file.get(latPath).value;
+  const lon = file.get(lonPath).value;
+  const data = dhw.value;
+
+  const features = [];
+  for (let j = 0; j < lat.length; j += 20) {
+    for (let i = 0; i < lon.length; i += 20) {
+      const idx = j * lon.length + i;
+      const value = data[idx];
+      const lonVal = lon[i];
+      const latVal = lat[j];
+      if (
+        isNaN(value) || value === -32768 ||
+        isNaN(lonVal) || isNaN(latVal)
+      ) continue;
+
+      features.push({ lat: latVal, lon: lonVal, dhw: value });
+    }
+  }
+
+  const max = d3.max(features.map(f => f.dhw));
+  const scaleFactor = max > 100 ? 100 : 1;
+
+  const viewer = new Cesium.Viewer("cesiumContainer", {
+    shouldAnimate: true,
+    terrainProvider: Cesium.createWorldTerrain()
+  });
+
+  for (const f of features) {
+    const scaled = f.dhw / scaleFactor;
+    const color = Cesium.Color.fromCssColorString(d3.interpolateYlOrRd(Math.min(scaled / 12, 1))).withAlpha(0.7);
+    viewer.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(f.lon, f.lat),
+      point: {
+        pixelSize: 4,
+        color: color,
+        outlineColor: Cesium.Color.BLACK,
+        outlineWidth: 0.5
+      },
+      description: `lat: ${f.lat.toFixed(2)}<br>lon: ${f.lon.toFixed(2)}<br>DHW: ${scaled.toFixed(2)} °C-weeks`
+    });
+  }
+
+  viewer.zoomTo(viewer.entities);
+</script>
+</body>
+</html>
