@@ -1,12 +1,17 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: ../docs
   resources:
-    - quarto/
-    - cesium/js/oceans.0.1.1.js
+    - cesium/index.html
+    - cesium/css/*.css
+    - cesium/js/*.js
+    - d3/*.html
+    - d3/*.js
 
 website:
   title: "Oceans"
+  site-url: https://marine-ecologist.github.io/oceans/
+  repo-url: https://github.com/marine-ecologist/oceans
   search: false
   navbar:
     left:

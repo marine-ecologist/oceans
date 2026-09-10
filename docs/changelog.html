@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Oceans 0.1.1 – Oceans</title>
+<title>Changelog – Oceans</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -32,10 +38,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-748b535e376f14d4692bf2b2e5fd6380.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-139760d7c2b45b71cf6fb5fb69731804.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-8baa621ab5c985e2650106a8849b7f71.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -75,10 +81,23 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./development.html"> 
-<span class="menu-text">Development</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-development" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Development</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-development">    
+        <li>
+    <a class="dropdown-item" href="./changelog.html">
+ <span class="dropdown-text">Changelog</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./development.html">
+ <span class="dropdown-text">D3 implementation</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/marine-ecologist/oceans"> <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
@@ -97,16 +116,16 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content page-columns page-full column-body" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Oceans 0.1.1</h1>
+<h1 class="title">Changelog</h1>
 </div>
 
 
 
-<div class="quarto-title-meta column-body">
+<div class="quarto-title-meta column-page">
 
     
   
@@ -118,72 +137,88 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<style>
- 
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="version-history" class="level2">
+<h2 class="anchored" data-anchor-id="version-history">Version History</h2>
+<section id="v0.1.1" class="level3">
+<h3 class="anchored" data-anchor-id="v0.1.1">v0.1.1</h3>
+<ul>
+<li><p>Preloads&nbsp;<code>dhw</code>&nbsp;layer on startup</p></li>
+<li><p>Camera zoom preset to Indonesia</p></li>
+<li><p>Tooltip formatting cleanup</p></li>
+<li><p>Active button state + hover highlighting improved</p></li>
+<li><p>Default date: static date − 2 days (stable availability)</p></li>
+<li><p>Padding and layout polish (buttons, sliders)</p></li>
+</ul>
+</section>
+<section id="v0.1.0" class="level3">
+<h3 class="anchored" data-anchor-id="v0.1.0">v0.1.0</h3>
+<ul>
+<li><p>Adds live date picker widget</p></li>
+<li><p>Dynamic WMS switching based on metric and date</p></li>
+<li><p>Buttons arranged in rows with spacing</p></li>
+<li><p>Improved tooltip styling (lat/lon + data)</p></li>
+<li><p>Adds custom geocoder handler</p></li>
+</ul>
+</section>
+<section id="v0.0.6" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.6">v0.0.6</h3>
+<ul>
+<li><p>Adds CRW PNG tile support (GCS format)</p></li>
+<li><p>WMS + tile dual-layer structure</p></li>
+<li><p>Parses GetFeatureInfo XML to extract readable values</p></li>
+<li><p>Metric IDs mapped to display names</p></li>
+</ul>
+</section>
+<section id="v0.0.5" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.5">v0.0.5</h3>
+<ul>
+<li><p>Modularized WMS/tile layer control</p></li>
+<li><p>Picker click/tooltip more robust</p></li>
+<li><p>Alpha slider now tracks active layer</p></li>
+</ul>
+</section>
+<section id="v0.0.4" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.4">v0.0.4</h3>
+<ul>
+<li><p>Adds tooltip GetFeatureInfo support</p></li>
+<li><p>Implements lat/lon hover display</p></li>
+<li><p>Layer click sampling integrated</p></li>
+</ul>
+</section>
+<section id="v0.0.3.1" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.3.1">v0.0.3.1</h3>
+<ul>
+<li><p>Minor fixes to 0.0.3</p></li>
+<li><p>Button interaction more stable</p></li>
+</ul>
+</section>
+<section id="v0.0.3" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.3">v0.0.3</h3>
+<ul>
+<li><p>Adds metric buttons (SST, DHW, SSTA, BAA)</p></li>
+<li><p>Introduces dynamic layer switching</p></li>
+</ul>
+</section>
+<section id="v0.0.2" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.2">v0.0.2</h3>
+<ul>
+<li><p>Alpha slider added</p></li>
+<li><p>Simple toggle between hardcoded WMS layers</p></li>
+</ul>
+</section>
+<section id="v0.0.1" class="level3">
+<h3 class="anchored" data-anchor-id="v0.0.1">v0.0.1</h3>
+<ul>
+<li><p>Initial setup: Cesium viewer with single hardcoded WMS</p></li>
+<li><p>No interaction, static display only</p></li>
+</ul>
 
-  .quarto-title-block, 
-  main > div:first-child {
-    display: none !important; /* Hides title block */
-  }
 
-  main.content {
-    padding-top: 0 !important;
-    margin-top: 0 !important;
-  }
-
-  .column-screen {
-    margin: 0 !important;
-    padding: 0 !important;
-    height: calc(100vh - 56px); /* 56px is default navbar height */
-  }
-
-  iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    display: block;
-    margin: 0;
-    padding: 0;
-  }
-  
-   /* Turn navbar black */
-  .navbar {
-    background-color: #202020 !important;
-  }
-
-  /* Optional: Make navbar text white */
-  .navbar a,
-  .navbar-brand,
-  .navbar-nav > li > a {
-    color: white !important;
-  }
-
-  /* Optional: Change hover/focus colors */
-  .navbar a:hover,
-  .navbar a:focus {
-    color: #ddd !important;
-  }
-
-  /* Optional: remove border/shadow */
-  .navbar {
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-
-
-</style>
-<div class="column-screen">
-<iframe src="cesium/index.html" frameborder="0" style="width:100%;height:100vh;border:none;display:block">
-</iframe>
-</div>
-
-
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -237,13 +272,14 @@ ul.task-list li input[type="checkbox"] {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -258,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/marine-ecologist\.github\.io\/oceans\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
